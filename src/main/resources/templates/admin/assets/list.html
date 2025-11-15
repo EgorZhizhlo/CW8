@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Объекты лизинга — Админ</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="/static/admin/css/navbar.css">
+    <link rel="stylesheet" href="/static/admin/css/footer.css">
+</head>
+
+<body>
+
+<div th:replace="admin/layout/navbar :: navbar"></div>
+
+<section class="py-4">
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold">Лизинговые объекты</h2>
+            <a href="/admin/assets/create" class="btn btn-primary">Добавить объект</a>
+        </div>
+
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Тип</th>
+                    <th>Стоимость</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="a : ${assets}">
+                    <td th:text="${a.id}">1</td>
+                    <td th:text="${a.name}">Автомобиль</td>
+                    <td th:text="${a.type}">ТРАНСПОРТ</td>
+                    <td th:text="${a.cost + ' ₽'}">1000000 ₽</td>
+
+                    <td>
+                        <span class="badge bg-success"
+                              th:if="${a.status == T(com.leasing.model.Asset.Status).AVAILABLE}">
+                            Доступен
+                        </span>
+
+                        <span class="badge bg-secondary"
+                              th:if="${a.status == T(com.leasing.model.Asset.Status).LEASED}">
+                            В аренде
+                        </span>
+                    </td>
+
+                    <td>
+                        <a th:href="@{/admin/assets/update/{id}(id=${a.id})}" class="btn btn-sm btn-warning">
+                            Изменить
+                        </a>
+                        <a th:href="@{/admin/assets/delete/{id}(id=${a.id})}" class="btn btn-sm btn-danger ms-1">
+                            Удалить
+                        </a>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(assets)}">
+                    <td colspan="6" class="text-center text-muted py-4">
+                        Объектов пока нет.
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+
+<div th:replace="admin/layout/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

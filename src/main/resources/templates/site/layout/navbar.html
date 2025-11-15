@@ -1,0 +1,44 @@
+<nav th:fragment="navbar"
+     class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3"
+     xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <div class="container">
+
+        <a class="navbar-brand fw-bold" href="/">Leasing Company</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="siteNavbar">
+
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                <li class="nav-item"><a class="nav-link" href="/services">Услуги</a></li>
+                <li class="nav-item"><a class="nav-link" href="/news">Новости</a></li>
+                <li class="nav-item"><a class="nav-link" href="/contacts">Контакты</a></li>
+
+                <!-- Админ-панель -->
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" href="/admin">Админ панель</a>
+                </li>
+
+                <!-- Вход -->
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link" href="/login">Войти</a>
+                </li>
+
+                <!-- Выход -->
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <form action="/logout" method="post" class="ms-3">
+                        <button class="btn btn-primary">Выйти</button>
+                    </form>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+
+</nav>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Заявки — Админ</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="/static/admin/css/navbar.css">
+    <link rel="stylesheet" href="/static/admin/css/footer.css">
+</head>
+
+<body>
+
+<div th:replace="admin/layout/navbar :: navbar"></div>
+
+<section class="py-4">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">Заявки</h2>
+
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Имя</th>
+                    <th>Телефон</th>
+                    <th>Сообщение</th>
+                    <th>Дата</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="r : ${requests}">
+                    <td th:text="${r.id}">1</td>
+                    <td th:text="${r.name}">Иван</td>
+                    <td th:text="${r.phone}">+7...</td>
+                    <td th:text="${r.message}">Текст...</td>
+                    <td th:text="${#temporals.format(r.createdAt, 'dd.MM.yyyy HH:mm')}">01.02.2025</td>
+
+                    <td>
+                        <span class="badge bg-secondary" th:if="${!r.processed}">
+                            Новая
+                        </span>
+
+                        <span class="badge bg-success" th:if="${r.processed}">
+                            Обработана
+                        </span>
+                    </td>
+
+                    <td>
+                        <a th:if="${!r.processed}"
+                           th:href="@{/admin/requests/process/{id}(id=${r.id})}"
+                           class="btn btn-sm btn-success">
+                            Отметить обработанной
+                        </a>
+
+                        <span th:if="${r.processed}" class="text-muted">
+                            ✔
+                        </span>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(requests)}">
+                    <td colspan="7" class="text-center text-muted py-4">
+                        Заявок пока нет.
+                    </td>
+                </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</section>
+
+<div th:replace="admin/layout/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

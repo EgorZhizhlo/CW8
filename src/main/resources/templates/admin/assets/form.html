@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${asset != null} ? 'Редактировать объект' : 'Добавить объект'">Объект</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="/static/admin/css/navbar.css">
+    <link rel="stylesheet" href="/static/admin/css/footer.css">
+</head>
+
+<body>
+
+<div th:replace="admin/layout/navbar :: navbar"></div>
+
+<section class="py-4">
+    <div class="container" style="max-width: 700px;">
+
+        <h2 class="fw-bold mb-4"
+            th:text="${asset?.id != null} ? 'Редактировать объект' : 'Добавить объект'">
+            Добавить объект
+        </h2>
+
+        <div class="bg-white p-4 rounded shadow-sm">
+
+            <form th:action="${asset?.id != null}
+                    ? @{'/admin/assets/update/' + ${asset?.id}}
+                    : @{'/admin/assets/create'}"
+                  method="post">
+
+                <input type="hidden" name="id" th:value="${asset?.id}" />
+
+                <!-- Название -->
+                <div class="mb-3">
+                    <label class="form-label">Название</label>
+                    <input type="text" name="name" class="form-control"
+                           th:value="${asset?.name}" required>
+                </div>
+
+                <!-- Тип -->
+                <div class="mb-3">
+                    <label class="form-label">Тип</label>
+                    <input type="text" name="type" class="form-control"
+                           th:value="${asset?.type}" required>
+                </div>
+
+                <!-- Стоимость -->
+                <div class="mb-3">
+                    <label class="form-label">Стоимость (₽)</label>
+                    <input type="number" step="0.01" min="0" name="cost" class="form-control"
+                           th:value="${asset?.cost}" required>
+                </div>
+
+                <!-- Статус -->
+                <div class="mb-3">
+                    <label class="form-label">Статус</label>
+                    <select class="form-select" name="status" required>
+                        <option value="AVAILABLE"
+                                th:selected="${asset?.status?.name() == 'AVAILABLE'}">
+                            Доступен
+                        </option>
+
+                        <option value="LEASED"
+                                th:selected="${asset?.status?.name() == 'LEASED'}">
+                            В аренде
+                        </option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-3">
+                    Сохранить
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+</section>
+
+<div th:replace="admin/layout/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

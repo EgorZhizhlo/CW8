@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новости компании</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/site/css/navbar.css">
+    <link rel="stylesheet" href="/static/site/css/footer.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="site/layout/navbar :: navbar"></div>
+
+<!-- HEADER -->
+<section class="bg-light py-5 border-bottom">
+    <div class="container text-center">
+        <h1 class="fw-bold mb-3">Новости компании</h1>
+        <p class="lead text-muted">
+            Последние обновления, специальные предложения и изменения условий лизинга.
+        </p>
+    </div>
+</section>
+
+<!-- NEWS LIST -->
+<section class="py-5" style="margin-bottom: 150px">
+    <div class="container">
+
+        <div class="row g-4">
+
+            <!-- Карточка новости (динамический цикл) -->
+            <div class="col-md-4" th:each="item : ${newsList}">
+                <div class="card h-100 shadow-sm border-0">
+
+                    <img th:src="${item.imageUrl}" class="card-img-top"
+                         alt="Новость"
+                         onerror="this.src='https://via.placeholder.com/800x500?text=News'">
+
+                    <div class="card-body">
+                        <small class="text-muted" th:text="${#temporals.format(item.createdAt, 'dd.MM.yyyy')}">
+                            01.01.2025
+                        </small>
+
+                        <h5 class="fw-bold mt-2" th:text="${item.title}">
+                            Заголовок новости
+                        </h5>
+
+                        <p class="text-muted"
+                           th:text="${#strings.abbreviate(item.content, 150)}">
+                        </p>
+
+                        <a th:href="@{/news/{id}(id=${item.id})}" class="btn btn-outline-primary btn-sm">
+                            Читать далее
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Если новостей нет -->
+            <div class="col-12 text-center text-muted py-5" th:if="${#lists.isEmpty(newsList)}">
+                Новостей пока нет.
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- FOOTER -->
+<div th:replace="site/layout/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -28,7 +28,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         // публичные страницы
-                        .requestMatchers("/", "/services", "/contacts", "/news", "/news/**",
+                        .requestMatchers("/", "/services", "/contacts", "/news", "/news/**", "/about",
                                 "/request", "/css/**", "/js/**", "/images/**", "/static/**").permitAll()
 
                         // страница логина

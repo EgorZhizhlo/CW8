@@ -4,13 +4,13 @@ WORKDIR /app
 
 # Копируем pom.xml и скачиваем зависимости (кэш)
 COPY pom.xml .
-RUN mvn -q -e -B dependency:go-offline
+RUN mvn -e -B dependency:go-offline
 
 # Копируем весь проект
 COPY src ./src
 
 # Сборка приложения
-RUN mvn -q -e -B clean package -DskipTests
+RUN mvn -e -B clean package -DskipTests
 
 
 FROM eclipse-temurin:17-jre
